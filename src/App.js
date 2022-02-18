@@ -1,22 +1,30 @@
 import React, { useEffect } from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
 import './App.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from './features/user/userSlice';
 
 const App = () => 
 {
+  const user = useSelector(state => state.user)
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    
-
+    if(user.isLogin === false)
+    {
+      dispatch(fetchUser())
+    }
   }, [])
+
+  console.log('user', user);
 
   return (
     <div>
-      
+      {
+       (user.loading || !user.isLogin) ? "Loading ..." 
+        :
+        user.data.email 
+      }
     </div>
   );
 }
